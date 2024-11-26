@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .post {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-view {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-view:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('reader_menu') }}" class="btn-back">← Back to Posts</a>
+        <h1>Recommended for You</h1>
+        {% for post in recommended_posts %}
+        <div class="post">
+            <h2>{{ post[1] }}</h2> <!-- post_title -->
+            <p>{{ post[2] }}</p> <!-- post_content -->
+            {% if post[3] %}
+            <div class="media">
+                {% if post[4] == 'image' %}
+                    <img src="{{ url_for('static', filename='uploads/' + post[3]) }}" alt="Post Media" style="width: 100%; height: auto;">
+                {% elif post[4] == 'video' %}
+                    <video controls style="width: 100%; height: auto;">
+                        <source src="{{ url_for('static', filename='uploads/' + post[3]) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            </div>
+            {% endif %}
+            <p><strong>Likes:</strong> {{ post[6] }}, <strong>Dislikes:</strong> {{ post[7] }}</p>
+
+            <form action="{{ url_for('post_details') }}" method="POST" class="view-post-form">
+                <input type="hidden" name="post_id" value="{{ post[0] }}">
+                <button type="submit" class="btn-view">Просмотреть пост</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

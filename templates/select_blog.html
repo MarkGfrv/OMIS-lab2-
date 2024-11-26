@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Blog</title>
+</head>
+<body>
+    <h1>Select a Blog to View Posts</h1>
+    <form method="POST" action="{{ url_for('show_blog_posts') }}">
+        <label for="blog_id">Choose a blog:</label>
+        <select name="blog_id" id="blog_id">
+            {% for blog in blogs %}
+                <option value="{{ blog[0] }}">{{ blog[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">View Posts</button>
+    </form>
+    <a href="{{ url_for('admin_menu') }}">Back to Admin Menu</a>
+</body>
+</html>

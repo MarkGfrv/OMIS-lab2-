@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Post</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Delete Post</h2>
+
+        <!-- Сообщение о успешном удалении -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for category, message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Форма для удаления поста -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="post_id">Select Post to Delete:</label>
+                <select name="post_id" id="post_id" class="form-control" required>
+                    <option value="" disabled selected>Select a post</option>
+                    {% for post in posts %}
+                        <option value="{{ post[0] }}">{{ post[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Post</button>
+        </form>
+
+        <!-- Ссылка на главное меню -->
+        <br>
+        <a href="{{ url_for('author_menu') }}" class="btn btn-secondary">Back to Main Menu</a>
+    </div>
+</body>
+</html>

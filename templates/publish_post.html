@@ -1,0 +1,55 @@
+<!-- templates/moderating_posts.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts on Moderation</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        button {
+            padding: 6px 12px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Posts on Moderation</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post[1] }}</td>
+                    <td>{{ post[2] }}</td>
+                    <td>
+                        <!-- Ссылка на редактирование поста -->
+                        <a href="{{ url_for('update_post_page', post_id=post[0]) }}">Edit</a>
+
+                        <!-- Ссылка на публикацию поста -->
+                        <a href="{{ url_for('publish_post_page', post_id=post[0]) }}">Publish</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('moderating_posts') }}">Back to Moderating Posts</a>
+</body>
+</html>

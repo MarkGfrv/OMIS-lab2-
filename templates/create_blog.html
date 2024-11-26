@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Create Blog</h2>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="alert alert-info">
+                    {% for category, message in messages %}
+                        <li class="alert alert-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Form for Blog Creation -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="blog_name">Blog Name</label>
+                <input type="text" class="form-control" id="blog_name" name="blog_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="blog_description">Blog Description</label>
+                <textarea class="form-control" id="blog_description" name="blog_description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="blog_image">Blog Image URL</label>
+                <input type="text" class="form-control" id="blog_image" name="blog_image">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Blog</button>
+        </form>
+
+        <hr>
+        <a href="{{ url_for('admin_menu') }}">Back to Admin Menu</a>
+    </div>
+</body>
+</html>

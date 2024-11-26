@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание поста</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Создание нового поста</h1>
+        <p>Заполните все поля для создания нового поста.</p>
+
+        <form method="POST" action="{{ url_for('create_post') }}">
+            <div class="form-group">
+                <label for="post_title">Заголовок поста</label>
+                <input type="text" class="form-control" id="post_title" name="post_title" required>
+            </div>
+            <div class="form-group">
+                <label for="post_content">Содержание поста</label>
+                <textarea class="form-control" id="post_content" name="post_content" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="user_nick">Логин пользователя</label>
+                <input type="text" class="form-control" id="user_nick" name="user_nick" required>
+            </div>
+            <div class="form-group">
+                <label for="blog_id">Выберите блог</label>
+                <select class="form-control" id="blog_id" name="blog_id" required>
+                    {% for blog in blogs %}
+                        <option value="{{ blog[0] }}">{{ blog[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="media_path">Путь к медиа</label>
+                <input type="text" class="form-control" id="media_path" name="media_path">
+            </div>
+            <div class="form-group">
+                <label for="media_type">Тип медиа</label>
+                <input type="text" class="form-control" id="media_type" name="media_type">
+            </div>
+            <button type="submit" class="btn btn-primary">Создать пост</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

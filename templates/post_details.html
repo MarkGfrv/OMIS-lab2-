@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post[0] }} - Full Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .media img, .media video {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .tags {
+            margin: 20px 0;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .tag:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .post-info {
+            font-size: 1.1em;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .post-info p {
+            margin: 5px 0;
+        }
+        .comments {
+            margin-top: 40px;
+        }
+        .comments h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .comment {
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-left: 5px solid #4CAF50;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .comment-user {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.1em;
+        }
+        .comment-date {
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('reader_menu') }}" class="btn-back">← Back to Posts</a>
+
+        <h1>{{ post[0] }}</h1> <!-- post_title -->
+        <p>{{ post[1] }}</p> <!-- post_content -->
+
+        {% if post[2] %}
+            <div class="media">
+                {% if post[3] == 'image' %}
+                    <img src="{{ url_for('static', filename='uploads/' + post[2]) }}" alt="Post Media">
+                {% elif post[3] == 'video' %}
+                    <video controls>
+                        <source src="{{ url_for('static', filename='uploads/' + post[2]) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="post-info">
+            <p><strong>Author:</strong> {{ post[7] }}</p> <!-- Author -->
+            <p><strong>Created At:</strong> {{ formatted_date }}</p><!-- Created Date -->
+            <p><strong>Likes:</strong> {{ post[4] }}, <strong>Dislikes:</strong> {{ post[5] }}</p> <!-- Like/Dislike counts -->
+            <p><strong>Comments:</strong> {{ post[6] }}</p> <!-- Comment count -->
+        </div>
+
+        <!-- Теги -->
+        <div class="tags">
+            <strong>Tags:</strong>
+            {% for tag in tags %}
+                <span class="tag">{{ tag[0] }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Комментарии -->
+        <div class="comments">
+            <h3>Comments</h3>
+            {% for comment in comments %}
+                <div class="comment">
+                    <p class="comment-user">{{ comment.user }}:</p>
+                    <p>{{ comment.content }}</p>
+                    <p class="comment-date"><small>{{ comment.created_at }}</small></p> <!-- Formatted Comment Date -->
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Посты на модерации</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .post-card {
+            margin-bottom: 20px;
+        }
+        .post-card .card-body {
+            padding: 15px;
+        }
+        .btn-edit {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-edit:hover {
+            background-color: #218838;
+        }
+        .btn-publish {
+            background-color: #ffc107;
+            color: white;
+        }
+        .btn-publish:hover {
+            background-color: #e0a800;
+        }
+        .btn-back {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #00b4d8, #0096c7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn-back:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn-back:focus {
+            outline: none;
+            box-shadow: 0 0 5px 2px rgba(0, 120, 255, 0.5);
+        }
+        .btn-back:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Ваши Посты на Модерации</h1>
+        <p>Здесь отображаются все посты, ожидающие модерации.</p>
+
+        <!-- Модальное окно для уведомления -->
+        <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alertModalLabel">Ошибка</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Вы должны быть администратором, чтобы опубликовать этот пост.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if posts %}
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-md-4">
+                        <div class="card post-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post[1] }}</h5>
+                                <p class="card-text">Статус: <strong>{{ post[2] }}</strong></p>
+                                <!-- Кнопка редактирования доступна и автору, и администратору -->
+                                <a href="{{ url_for('update_post', post_id=post[0]) }}" class="btn btn-edit">Редактировать</a>
+
+                                <!-- Кнопка "Опубликовать" доступна только для admin -->
+                                {% if session['role'] == 'admin' %}
+                                    <form action="{{ url_for('publish_post') }}" method="POST">
+                                        <input type="hidden" name="post_id" value="{{ post[0] }}">
+                                        <button type="submit" class="btn btn-publish">Опубликовать</button>
+                                    </form>
+                                {% else %}
+                                    <button class="btn btn-publish" disabled>Вы не можете опубликовать этот пост</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>У вас нет постов на модерации.</p>
+        {% endif %}
+
+        <!-- Кнопки возврата в меню -->
+        <div class="row">
+            <div class="col-12 text-center">
+                {% if session['role'] == 'author' %}
+                    <a href="{{ url_for('author_menu') }}" class="btn btn-back">Вернуться в меню автора</a>
+                {% elif session['role'] == 'admin' %}
+                    <a href="{{ url_for('admin_menu') }}" class="btn btn-back">Вернуться в меню администратора</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Проверка на роль пользователя (если не admin, показываем модальное окно)
+        {% if session['role'] != 'admin' %}
+            // Показать модальное окно, если роль не admin
+            $('#alertModal').modal('show');
+        {% endif %}
+    </script>
+</body>
+</html>

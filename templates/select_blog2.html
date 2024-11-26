@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .blog-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .blog-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .blog-item:hover {
+            background-color: #f0f0f0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px auto;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Select a Blog</h1>
+
+    <!-- Форма для выбора блога -->
+    <form method="POST">
+        <ul class="blog-list">
+            {% for blog in blogs %}
+                <li class="blog-item">
+                    <input type="radio" id="blog_{{ blog[0] }}" name="blog_id" value="{{ blog[0] }}" required>
+                    <label for="blog_{{ blog[0] }}">{{ blog[1] }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button type="submit" class="btn">View Posts</button>
+    </form>
+</div>
+
+</body>
+</html>

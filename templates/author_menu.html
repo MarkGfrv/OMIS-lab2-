@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Menu</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .media img, .media video {
+            width: 297px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .button-line {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        .button-line a {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button-line a:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .logout-button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logout-button">Выйти</a>
+    <div class="container">
+        <h1>Author Menu</h1>
+
+        <div class="section-title">Управление постами</div>
+        <div class="button-line">
+            <a href="/author_menu/create_post">Создать пост</a>
+            <a href="/author_menu/delete_post">Удалить пост</a>
+            <a href="/author_menu/published_posts">Опубликованные</a>
+            <a href="/author_menu/on_moderation_posts">На модерации</a>
+            <a href="/reader_menu">Главное меню</a>
+        </div>
+    </div>
+</body>
+</html>

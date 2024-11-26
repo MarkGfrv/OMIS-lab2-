@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Manage Users</h2>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="alert alert-info">
+                    {% for category, message in messages %}
+                        <li class="alert alert-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>User Login</th>
+                    <th>Role</th>
+                    <th>Change Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="user_id" value="{{ user[0] }}">
+                            {% if user[2] == 'reader' %}
+                                <select class="form-control" name="new_role" required>
+                                    <option value="author">Promote to Author</option>
+                                    <option value="reader" selected>Reader</option>
+                                </select>
+                            {% elif user[2] == 'author' %}
+                                <select class="form-control" name="new_role" required>
+                                    <option value="author" selected>Author</option>
+                                    <option value="reader">Demote to Reader</option>
+                                </select>
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary mt-2">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr>
+        <a href="{{ url_for('admin_menu') }}" class="btn btn-secondary">Back to Admin Menu</a>
+    </div>
+</body>
+</html>

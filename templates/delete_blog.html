@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Delete Blog</h2>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="alert alert-info">
+                    {% for category, message in messages %}
+                        <li class="alert alert-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Form for Blog Deletion -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="blog_id">Select Blog to Delete</label>
+                <select class="form-control" id="blog_id" name="blog_id" required>
+                    <!-- Loop through blogs and display options -->
+                    {% for blog in blogs %}
+                        <option value="{{ blog[0] }}">{{ blog[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Delete Blog</button>
+        </form>
+
+        <hr>
+        <a href="{{ url_for('admin_menu') }}">Back to Admin Menu</a>
+    </div>
+</body>
+</html>
