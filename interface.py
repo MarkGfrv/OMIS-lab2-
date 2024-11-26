@@ -8,33 +8,62 @@ app = Flask(__name__, template_folder='templates')
 app.secret_key = '12345'
 
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        if username not in ['author1','admin','reader1']:
-            flash('Ошибка: логин должен соответствовать задачам, выполняемым вами в рамках системы'
-                  '. Возможные варианты:\n автор(author) - управление постами.\n Администратор'
-                  '(admin) - управление блогами.\n Читатель(reader) - просмотр контента.', 'danger')
+        query = "SELECT user_id, user_password, user_role FROM Users WHERE user_login = %s"
+        user_data = Database.execute_query(query, params=(username,), fetch=True)
+
+        if not user_data:
+            flash('Пользователь не найден. Зарегистрируйтесь!', 'danger')
+            return redirect(url_for('register'))
+
+        user_id, stored_password, role = user_data[0]
+        if password != stored_password:
+            flash('Неверный пароль. Попробуйте снова.', 'danger')
             return redirect(url_for('login'))
 
-        query = "SELECT user_id FROM Users WHERE user_login = %s"
-        user_data = Database.execute_query(query, params=(username,), fetch=True)
-        user_id = user_data[0][0]
         session['user'] = username
         session['user_id'] = user_id
-        session[
-            'role'] = 'author' if username == 'author1' else 'admin' if username == 'admin' else 'reader'  # Определяем роль
-        if username == 'author1':
+        session['role'] = role
+
+        if role == 'author':
             return redirect(url_for('author_menu'))
-        elif username == 'admin':
+        elif role == 'admin':
             return redirect(url_for('admin_menu'))
-        elif username == 'reader1':
+        elif role == 'reader':
             return redirect(url_for('reader_menu'))
 
     return render_template('login.html')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        role = request.form['role']
+
+        query_check_user = "SELECT user_id FROM Users WHERE user_login = %s"
+        user_exists = Database.execute_query(query_check_user, params=(username,), fetch=True)
+
+        if user_exists:
+            flash('Имя пользователя уже занято. Выберите другое.', 'danger')
+            return redirect(url_for('register'))
+
+        query_insert_user = """
+            INSERT INTO Users (user_login, user_password, user_role)
+            VALUES (%s, %s, %s)
+        """
+        Database.execute_query(query_insert_user, params=(username, password, role))
+        flash('Аккаунт успешно создан! Теперь вы можете войти.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
 
 
 @app.route('/author_menu')
