@@ -26,6 +26,13 @@
         .btn-publish:hover {
             background-color: #e0a800;
         }
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
         .btn-back {
             margin-top: 20px;
             background: linear-gradient(90deg, #00b4d8, #0096c7);
@@ -67,7 +74,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Вы должны быть администратором, чтобы опубликовать этот пост.
+                        Вы должны быть администратором, чтобы опубликовывать или отклонять посты.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -93,8 +100,14 @@
                                         <input type="hidden" name="post_id" value="{{ post[0] }}">
                                         <button type="submit" class="btn btn-publish">Опубликовать</button>
                                     </form>
+
+                                    <form action="{{ url_for('reject_post') }}" method="POST" style="display: inline-block;">
+                                        <input type="hidden" name="post_id" value="{{ post[0] }}">
+                                        <button type="submit" class="btn btn-reject">Отклонить</button>
+                                    </form>
                                 {% else %}
                                     <button class="btn btn-publish" disabled>Вы не можете опубликовать этот пост</button>
+                                    <button class="btn btn-reject" disabled>Вы не можете отклонить этот пост</button>
                                 {% endif %}
                             </div>
                         </div>
